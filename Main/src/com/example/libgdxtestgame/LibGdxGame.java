@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,36 +20,34 @@ import com.badlogic.gdx.math.Rectangle;
  * To change this template use File | Settings | File Templates.
  */
 public class LibGdxGame implements ApplicationListener {
-    Texture boatImg, bubbleImg;
     Music bgMusic;
-    Rectangle boat, bubble;
 
-    int scrnWidth, scrnHeight;
+    Map testmap;
+
+    Rectangle character;
+
+    PCharacter duder;
+
+    public static int scrnWidth, scrnHeight;
+    public static float scaleW, scaleH;
+
+    TextureCache txtCache = TextureCache.getInstance();
 
     OrthographicCamera camera;
     SpriteBatch spritebatch;
 
     @Override
     public void create() {
-        boatImg = new Texture(Gdx.files.internal("boat.png"));
-        bubbleImg = new Texture(Gdx.files.internal("bubble.png"));
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("bg.mp3"));
-        boat = new Rectangle();
-        bubble = new Rectangle();
-        bubble.x = 100;
-        bubble.y = 100;
-        bubble.width = 16;
-        bubble.height = 16;
-        boat.x = 400;
-        boat.y = 460;
-        boat.width = 32;
-        boat.height = 16;
+        testmap = new Map("testmap.txt", "Test");
 
-        scrnHeight = 480;
-        scrnWidth = 800;
+        duder = new PCharacter("main", "smiley_sprite");
 
-        bgMusic.setLooping(true);
-        bgMusic.play();
+        scrnHeight = 160;
+        scrnWidth = 144;
+        scaleW = scaleH = 1f;
+
+        //bgMusic.setLooping(true);
+        //bgMusic.play();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, scrnWidth, scrnHeight);
@@ -58,7 +57,13 @@ public class LibGdxGame implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        scrnHeight = height;
+        scrnWidth = width;
+        scaleH = scrnHeight / 160f;
+        scaleW = scrnWidth / 144f;
+        System.out.println("Resized to " + scrnHeight + "x" + scrnWidth);
+        System.out.println("New scale factors of " + scaleH + " and " + scaleW);
+
     }
 
     @Override
@@ -67,20 +72,28 @@ public class LibGdxGame implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0.6f, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        boolean isTouched = Gdx.input.isTouched();
-        if (isTouched) {
-            boat.x = Gdx.input.getX() - boat.width/2;
-            boat.y = scrnHeight - Gdx.input.getY() - boat.height/2;
-        }
-        bubble.x += 1;
-        bubble.y += 1;
+
+        //bubble.x += 1;
+        //bubble.y += 1;
 
         camera.update();
 
         spritebatch.setProjectionMatrix(camera.combined);
         spritebatch.begin();
-        spritebatch.draw(boatImg, boat.x, boat.y);
-        spritebatch.draw(bubbleImg, bubble.x, bubble.y);
+        int x = 0, y = 0;
+        for (String row : testmap.mapMatrix) {
+            for (Character tileC : row.toCharArray()) {
+                TextureNode tile = txtCache.loadTexture(Map.intToTileIdent(tileC));
+                spritebatch.draw(tile.texture, x, y);
+                x += 16;
+            }
+            x = 0;
+            y += 16;
+        }
+        duder.move();
+        spritebatch.draw(txtCache.loadTexture(PCharacter.fileExt(duder.spriteID)).texture, duder.currentPos.x, duder.currentPos.y);
+        //spritebatch.draw(boatImg, boat.x, boat.y);
+        //spritebatch.draw(bubbleImg, bubble.x, bubble.y);
         spritebatch.end();
     }
 

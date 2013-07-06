@@ -15,8 +15,8 @@ public class DesktopStarter {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Title";
         cfg.useGL20 = true;
-        cfg.width = 800;
-        cfg.height = 480;
+        cfg.width = 144;
+        cfg.height = 160;
         new LwjglApplication(new LibGdxGame(), cfg);
     }
 }
