@@ -26,10 +26,19 @@ public class Map {
 
     public static String intToTileIdent(Character tilenum) {
         switch (tilenum) {
-            case '0':
+            case '0':case '\n':
                 return "tiles/field_tile1";
             default:
+                //System.out.println("what are you doing" + tilenum);
                 return "error";
         }
+    }
+
+    public int getRowCount() {
+        return mapMatrix.length;
+    }
+
+    public int getColumnCount() {
+        return mapMatrix[0].length();
     }
 }

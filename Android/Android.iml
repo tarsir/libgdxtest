@@ -11,11 +11,13 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Android 4.0.3 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android 4.2.2" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Android" level="project" />
     <orderEntry type="module" module-name="Desktop" exported="" />
     <orderEntry type="module" module-name="Main" exported="" />
+    <orderEntry type="module" module-name="Desktop" />
+    <orderEntry type="module" module-name="Main" />
   </component>
 </module>
 

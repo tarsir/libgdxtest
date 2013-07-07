@@ -33,11 +33,11 @@ public class PCharacter implements ICharacter{
         scaled = new Vector2();
     }
 
-    public void move() {
+    public void move(int xBound, int yBound) {
         boolean isTouched = Gdx.input.isTouched();
         if (isTouched) {
             //find goal info
-            goalPos.set(Gdx.input.getX(), Gdx.input.getY());
+            goalPos.set(Gdx.input.getX(), LibGdxGame.scrnHeight - Gdx.input.getY());
             scaleVec(goalPos);
             //scaleVec(currentPos);
             System.out.println("goalPos=" + goalPos.toString());
@@ -61,7 +61,7 @@ public class PCharacter implements ICharacter{
         }
         currentPos.add(velocity);
 
-        int xBound = (int) ((LibGdxGame.scrnWidth - 16 * LibGdxGame.scaleW) / LibGdxGame.scaleW);
+        int xBound = (int) (( - 16 * LibGdxGame.scaleW) / LibGdxGame.scaleW);
         int yBound = (int) ((LibGdxGame.scrnHeight - 16 * LibGdxGame.scaleH) / LibGdxGame.scaleH);
         if (isTouched) System.out.println("Screen bounds are: 0," + xBound + " and 0," + yBound);
         if (currentPos.x < 0) {
@@ -79,6 +79,11 @@ public class PCharacter implements ICharacter{
             //System.out.println("VIOLATION");
         }
         //System.out.println("x=" + currentPos.x + "\ty=" + currentPos.y);
+
+        if (currentPos.dst(goalPos) < 5f) {
+            velocity.set(0f,0f);
+            //System.out.println("distance = " + currentPos.dst(goalPos));
+        }
     }
 
     public static String fileExt(String spriteIdent) {

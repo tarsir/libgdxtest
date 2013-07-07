@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.awt.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: stephen
@@ -76,6 +78,7 @@ public class LibGdxGame implements ApplicationListener {
         //bubble.x += 1;
         //bubble.y += 1;
 
+        centerCamera();
         camera.update();
 
         spritebatch.setProjectionMatrix(camera.combined);
@@ -110,5 +113,13 @@ public class LibGdxGame implements ApplicationListener {
     @Override
     public void dispose() {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    void centerCamera() {
+        int xMax = (int) (144 * scaleW), yMax = (int) (160 * scaleH);
+        int xMapMax = (int) (144 * testmap.getColumnCount() * scaleW);
+        int yMapMax = (int) (160 * testmap.getRowCount() * scaleH);
+
+        camera.position.set(duder.currentPos.x, duder.currentPos.y, 0);
     }
 }
