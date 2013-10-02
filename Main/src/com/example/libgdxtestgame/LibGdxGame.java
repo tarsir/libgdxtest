@@ -32,6 +32,8 @@ public class LibGdxGame implements ApplicationListener {
 
     public static int scrnWidth, scrnHeight;
     public static float scaleW, scaleH;
+    int cameraXMin, cameraXMax, cameraYMin, cameraYMax;
+    int camX, camY;
 
     TextureCache txtCache = TextureCache.getInstance();
 
@@ -66,6 +68,10 @@ public class LibGdxGame implements ApplicationListener {
         System.out.println("Resized to " + scrnHeight + "x" + scrnWidth);
         System.out.println("New scale factors of " + scaleH + " and " + scaleW);
 
+        cameraXMin = scrnWidth/2;
+        cameraXMax = (int) (16*testmap.getColumnCount()*scaleW - scrnWidth/2);
+        cameraYMin = scrnHeight/2;
+        cameraYMax = (int) (16*testmap.getRowCount()*scaleH - scrnHeight/2);
     }
 
     @Override
@@ -84,6 +90,9 @@ public class LibGdxGame implements ApplicationListener {
         spritebatch.setProjectionMatrix(camera.combined);
         spritebatch.begin();
         int x = 0, y = 0;
+        int xBound = (int) (16 * (testmap.getColumnCount() * scaleW - 1));
+        int yBound = (int) (16 * (testmap.getRowCount() * scaleH - 1));
+
         for (String row : testmap.mapMatrix) {
             for (Character tileC : row.toCharArray()) {
                 TextureNode tile = txtCache.loadTexture(Map.intToTileIdent(tileC));
@@ -93,7 +102,7 @@ public class LibGdxGame implements ApplicationListener {
             x = 0;
             y += 16;
         }
-        duder.move();
+        duder.move(xBound, yBound);
         spritebatch.draw(txtCache.loadTexture(PCharacter.fileExt(duder.spriteID)).texture, duder.currentPos.x, duder.currentPos.y);
         //spritebatch.draw(boatImg, boat.x, boat.y);
         //spritebatch.draw(bubbleImg, bubble.x, bubble.y);
@@ -120,6 +129,22 @@ public class LibGdxGame implements ApplicationListener {
         int xMapMax = (int) (144 * testmap.getColumnCount() * scaleW);
         int yMapMax = (int) (160 * testmap.getRowCount() * scaleH);
 
-        camera.position.set(duder.currentPos.x, duder.currentPos.y, 0);
+        if (duder.currentPos.x > cameraXMax) {
+            camX = cameraXMax;
+        }
+        else if (duder.currentPos.x < cameraXMin) {
+            camX = cameraXMin;
+        }
+        else { camX = (int) duder.currentPos.x; }
+
+        if (duder.currentPos.y > cameraYMax) {
+            camY = cameraYMax;
+        }
+        else if (duder.currentPos.y < cameraYMin) {
+            camY = cameraYMin;
+        }
+        else { camY = (int) duder.currentPos.y; }
+
+        camera.position.set(camX, camY, 0);
     }
 }

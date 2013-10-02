@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 interface ICharacter {
-    void move();
+    void move(int xBound, int yBound);
 }
 
 public class PCharacter implements ICharacter{
@@ -61,8 +61,8 @@ public class PCharacter implements ICharacter{
         }
         currentPos.add(velocity);
 
-        int xBound = (int) (( - 16 * LibGdxGame.scaleW) / LibGdxGame.scaleW);
-        int yBound = (int) ((LibGdxGame.scrnHeight - 16 * LibGdxGame.scaleH) / LibGdxGame.scaleH);
+        //int xBound = (int) (( - 16 * LibGdxGame.scaleW) / LibGdxGame.scaleW);
+        //int yBound = (int) ((LibGdxGame.scrnHeight - 16 * LibGdxGame.scaleH) / LibGdxGame.scaleH);
         if (isTouched) System.out.println("Screen bounds are: 0," + xBound + " and 0," + yBound);
         if (currentPos.x < 0) {
             currentPos.x = 0;

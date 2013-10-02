@@ -20,7 +20,12 @@ public class Map {
 
     public Map(String filename, String ident) {
         FileHandle file = Gdx.files.internal("data/" + filename);
-        mapMatrix = file.readString().split("\n");
+        String temp = file.readString();
+        System.out.println("temp=" + temp + "end");
+        mapMatrix = temp.split("\\s+");
+        /*for (String st : mapMatrix) {
+            System.out.print(st);
+        } */
         identifier = ident;
     }
 
@@ -29,7 +34,7 @@ public class Map {
             case '0':case '\n':
                 return "tiles/field_tile1";
             default:
-                //System.out.println("what are you doing" + tilenum);
+                //System.out.println("tilenum=\"" + tilenum + "\"");
                 return "error";
         }
     }
